@@ -126,7 +126,12 @@ export default function App() {
   // Listen for Google OAuth popup completion
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      if (!event.origin.endsWith('.run.app') && !event.origin.includes('localhost')) {
+      const isTrustedOrigin =
+        event.origin === window.location.origin ||
+        event.origin.endsWith('.onrender.com') ||
+        event.origin.endsWith('.run.app') ||
+        event.origin.includes('localhost');
+      if (!isTrustedOrigin) {
         return;
       }
       if (event.data?.type === 'OAUTH_AUTH_SUCCESS') {
